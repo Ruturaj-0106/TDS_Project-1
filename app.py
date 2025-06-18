@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from utils.qa_model import get_answer
+from qa_model import get_answer
 
 app = FastAPI()
 
