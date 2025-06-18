@@ -1,0 +1,13 @@
+
+providers:
+  - id: virtual-ta-api
+    config:
+      url: http://localhost:8000/
+
+scenarios:
+  - name: Model Selection
+    vars:
+      question: "Should I use gpt-4o-mini or gpt-3.5?"
+    assert:
+      - type: contains
+        value: "gpt-3.5"
