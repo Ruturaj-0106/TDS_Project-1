@@ -1,0 +1,25 @@
+name: Workflow with Email Step
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: 23f1001967@ds.study.iitm.ac.in - Setup and Test Step
+        run: |
+          echo "Step containing email: 23f1001967@ds.study.iitm.ac.in"
+          echo "Current directory: $(pwd)"
+          echo "Listing files:"
+          ls -la
+          echo "Workflow execution successful"
+          
+      - name: Regular completion step
+        run: echo "Workflow completed successfully with email step"
