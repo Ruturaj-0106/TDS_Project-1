@@ -1,0 +1,48 @@
+name: Cache Dependencies Demo
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  cache-demo:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js (example dependency)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      id: cache-deps
+      with:
+        path: |
+          ~/.npm
+          node_modules
+        key: cache-c276e9c-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          cache-c276e9c-${{ runner.os }}-
+          
+    - name: Install dependencies if cache miss
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      run: |
+        npm ci
+        echo "Dependencies installed fresh - cache miss"
+        
+    - name: prime-cache-c276e9c
+      run: |
+        if [ "${{ steps.cache-deps.outputs.cache-hit }}" == "true" ]; then
+          echo "Cache hit! Dependencies restored from cache"
+        else
+          echo "Cache miss! Dependencies installed fresh"
+        fi
+        
+    - name: Run tests (example step)
+      run: echo "Running tests with cached dependencies"
